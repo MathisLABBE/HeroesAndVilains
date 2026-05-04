@@ -117,7 +117,7 @@
     
     &:hover:not(.v-list-item--active) {
       background-color: var(--current-secondary) !important;
-      color: var(--comic-white) !important; // Ensure readable text on hover
+      color: var(--comic-black) !important;
       transform: translateX(10px) rotate(1deg);
     }
   }
@@ -144,7 +144,6 @@
   text-transform: uppercase !important;
   transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
-  // General colors
   background-color: var(--current-secondary) !important;
   color: var(--comic-black) !important;
 
@@ -152,21 +151,27 @@
     transform: scale(1.1) rotate(2deg);
     box-shadow: 10px 10px 0px var(--comic-black) !important;
     background-color: var(--current-accent) !important;
-    color: var(--comic-black) !important; // Explicit black text on light hover
-  }
-
-  // Specific overrides for dark backgrounds
-  .mode-villain & {
+    // Default hover text color
     color: var(--comic-black) !important;
   }
 
+  // Villain Mode Hover Override
+  .mode-villain & {
+    &:hover {
+      background-color: var(--villain-secondary) !important; // Stays green on hover for better visibility
+      color: var(--comic-black) !important;
+      transform: scale(1.1) rotate(-2deg);
+    }
+  }
+
+  // Opposition Mode Hover Override
   .mode-opposition & {
     background-color: var(--opp-accent) !important;
     color: var(--comic-black) !important;
     
     &:hover {
       background-color: var(--opp-primary) !important;
-      color: var(--comic-white) !important; // White text on Orange hover
+      color: var(--comic-white) !important;
     }
   }
 }
