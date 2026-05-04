@@ -37,11 +37,9 @@
     </v-navigation-drawer>
 
     <v-main class="position-relative overflow-hidden">
-      <!-- Opposition Layout Elements (Centered relative to v-main) -->
+      <!-- Opposition Layout Elements -->
       <div class="opposition-divider-container">
-        <div class="lightning-bolt-wrapper">
-          <div class="lightning-bolt"></div>
-        </div>
+        <div class="lightning-bolt"></div>
         <div class="vs-badge">VS</div>
       </div>
       

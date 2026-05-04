@@ -43,21 +43,53 @@
   --current-primary: var(--hero-primary);
   --current-secondary: var(--hero-secondary);
   --current-accent: var(--hero-accent);
-  background-color: var(--hero-primary) !important;
 }
 
 .mode-villain {
   --current-primary: var(--villain-primary);
   --current-secondary: var(--villain-secondary);
   --current-accent: var(--villain-accent);
-  background-color: var(--villain-primary) !important;
 }
 
 .mode-opposition {
   --current-primary: var(--opp-primary);
   --current-secondary: var(--opp-secondary);
   --current-accent: var(--opp-accent);
-  background-color: #333 !important; // Base color
+}
+
+// Background Handling
+.v-main {
+  background-size: 25px 25px;
+  position: relative;
+  
+  .mode-hero & {
+    background-color: var(--hero-primary) !important;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 15%, transparent 16%);
+  }
+  
+  .mode-villain & {
+    background-color: var(--villain-primary) !important;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.4) 15%, transparent 16%);
+  }
+  
+  .mode-opposition & {
+    background-color: var(--hero-primary) !important;
+    
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background-color: var(--villain-primary);
+      clip-path: polygon(
+        50% 0%, 100% 0%, 100% 100%, 40% 100%, 
+        55% 75%, 35% 55%, 50% 35%, 45% 0%
+      );
+      z-index: 0;
+    }
+  }
 }
 
 // Global Components Style
@@ -73,99 +105,100 @@
     border: 3px solid var(--comic-black);
     margin: 10px;
     padding: 12px !important;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     background: #f8f8f8;
     box-shadow: 4px 4px 0 var(--comic-black);
     color: var(--comic-black) !important;
-    
-    .v-list-item-title {
-      font-size: 1.3rem !important;
-      letter-spacing: 1px;
-    }
     
     &--active {
       background-color: var(--current-primary) !important;
       color: var(--comic-white) !important;
       transform: scale(1.05) rotate(-2deg);
-      box-shadow: 6px 6px 0 var(--comic-black);
-      -webkit-text-stroke: 0.5px var(--comic-black);
     }
     
     &:hover:not(.v-list-item--active) {
-      background-color: var(--current-accent);
+      background-color: var(--current-secondary) !important;
+      color: var(--comic-white) !important; // Ensure readable text on hover
       transform: translateX(10px) rotate(1deg);
     }
   }
 }
 
-.v-table.comic-table {
-  border: var(--border-width) solid var(--comic-black) !important;
+.v-card.comic-card {
+  border: 6px solid var(--comic-black) !important;
+  box-shadow: 15px 15px 0px var(--comic-black) !important;
   background: white !important;
-  border-collapse: separate !important;
-  border-spacing: 0;
-  box-shadow: var(--comic-shadow);
   color: black !important;
+  z-index: 5;
   
-  thead th {
-    font-family: var(--comic-font);
-    background-color: var(--comic-black) !important;
+  .v-card-title {
+    background-color: var(--current-primary) !important;
+    border-bottom: 4px solid var(--comic-black);
     color: white !important;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 1.2rem !important;
-    border-bottom: var(--border-width) solid var(--comic-black);
   }
-  
-  tbody tr {
-    transition: background 0.2s;
-    td {
-      border-bottom: 2px solid #ddd;
-    }
+}
+
+.v-btn.comic-btn {
+  border: 4px solid var(--comic-black) !important;
+  font-family: var(--comic-font) !important;
+  box-shadow: 6px 6px 0px var(--comic-black) !important;
+  text-transform: uppercase !important;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  // General colors
+  background-color: var(--current-secondary) !important;
+  color: var(--comic-black) !important;
+
+  &:hover {
+    transform: scale(1.1) rotate(2deg);
+    box-shadow: 10px 10px 0px var(--comic-black) !important;
+    background-color: var(--current-accent) !important;
+    color: var(--comic-black) !important; // Explicit black text on light hover
+  }
+
+  // Specific overrides for dark backgrounds
+  .mode-villain & {
+    color: var(--comic-black) !important;
+  }
+
+  .mode-opposition & {
+    background-color: var(--opp-accent) !important;
+    color: var(--comic-black) !important;
+    
     &:hover {
-      background-color: #f0f0f0 !important;
+      background-color: var(--opp-primary) !important;
+      color: var(--comic-white) !important; // White text on Orange hover
     }
   }
 }
 
-.v-text-field {
-  .v-field {
-    border: var(--border-width) solid var(--comic-black) !important;
-    border-radius: 0 !important;
-    box-shadow: 6px 6px 0px rgba(0,0,0,0.15);
-    background: white !important;
+// Theme Switcher Fix
+.theme-switcher {
+  background: white !important;
+  border: 3px solid black !important;
+  
+  .v-btn {
+    opacity: 0.4;
     color: black !important;
     
-    &--focused {
-      box-shadow: 10px 10px 0px var(--comic-black);
-      transform: translate(-2px, -2px);
+    &--active {
+      opacity: 1;
+      background-color: #eee !important;
+      .v-icon { color: var(--current-primary) !important; }
     }
-    
-    .v-label { color: rgba(0,0,0,0.8) !important; }
   }
 }
 
-// Background Handling for All Modes
-.v-main {
-  background-size: 25px 25px;
-  position: relative;
-  
-  .mode-hero & {
-    background-color: var(--hero-primary) !important;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 15%, transparent 16%);
-  }
-  
-  .mode-villain & {
-    background-color: var(--villain-primary) !important;
-    background-image: radial-gradient(rgba(0, 0, 0, 0.4) 15%, transparent 16%);
-    color: white !important;
-  }
-  
-  .mode-opposition & {
-    background: linear-gradient(90deg, var(--hero-primary) 50%, var(--villain-primary) 50%) !important;
+// Alert Fix
+.v-alert {
+  border: 3px solid var(--comic-black) !important;
+  .comic-title, .v-alert__content {
+    color: black !important;
+    text-shadow: none !important;
+    -webkit-text-stroke: 0 !important;
   }
 }
 
-// Lightning Divider Layout
+// Lightning Divider
 .opposition-divider-container {
   position: absolute;
   top: 0;
@@ -173,33 +206,11 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1; 
+  z-index: 1;
   display: none;
 
   .mode-opposition & {
     display: block;
-  }
-}
-
-.lightning-bolt-wrapper {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 260px; // Wider wrapper
-  height: 100%;
-  transform: translateX(-50%);
-  background: transparent;
-  
-  // Solid black background for the bolt to cover the split line
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 20px;
-    right: 20px;
-    height: 100%;
-    background: var(--comic-black);
-    z-index: -1;
   }
 }
 
@@ -210,101 +221,37 @@
   width: 100%;
   height: 100%;
   background: var(--comic-black);
-  // Aggressive non-rectilinear lightning bolt
   clip-path: polygon(
-    25% 0%, 85% 0%, 
-    60% 12%, 95% 12%, 
-    45% 35%, 85% 35%, 
-    30% 60%, 80% 60%, 
-    55% 85%, 75% 85%,
-    20% 100%, 0% 100%, 
-    25% 75%, 5% 75%, 
-    40% 50%, 10% 50%, 
-    25% 25%, 5% 25%,
-    15% 0%
+    50% 0%, 51.5% 0%, 
+    46.5% 20%, 51.5% 45%, 
+    36.5% 55%, 56.5% 75%, 
+    41.5% 100%, 40% 100%,
+    55% 75%, 35% 55%, 50% 35%, 45% 0%
   );
-  box-shadow: 0 0 30px rgba(0,0,0,1);
 }
 
 .vs-badge {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 45%;
   transform: translate(-50%, -50%) rotate(-15deg);
   font-family: var(--comic-font) !important;
   font-size: 14rem !important;
   color: var(--hero-secondary) !important;
   -webkit-text-stroke: 6px var(--comic-black) !important;
   z-index: 200 !important;
-  pointer-events: none;
   text-shadow: 15px 15px 0px var(--comic-black) !important;
-  white-space: nowrap;
 }
 
-// Comic Components
-.v-card.comic-card {
-  border: 6px solid var(--comic-black) !important;
-  box-shadow: 15px 15px 0px var(--comic-black) !important;
-  border-radius: 0 !important;
-  transition: transform 0.2s, box-shadow 0.2s;
+// Table fix
+.v-table.comic-table {
   background: white !important;
-  position: relative;
-  z-index: 5;
   color: black !important;
+  border: 4px solid black !important;
   
-  .v-card-title {
-    background-color: var(--current-primary) !important;
-    border-bottom: 4px solid var(--comic-black);
+  thead th {
+    background: black !important;
     color: white !important;
     font-family: var(--comic-font);
-    text-transform: uppercase;
-  }
-  
-  .v-card-text {
-    color: black !important;
-  }
-  
-  &:hover {
-    transform: translate(-6px, -6px);
-    box-shadow: 22px 22px 0px var(--comic-black) !important;
-  }
-}
-
-.v-btn.comic-btn {
-  border: 4px solid var(--comic-black) !important;
-  border-radius: 0 !important;
-  font-family: var(--comic-font) !important;
-  text-transform: uppercase !important;
-  box-shadow: 6px 6px 0px var(--comic-black) !important;
-  padding: 0 30px !important;
-  height: 52px !important;
-  font-size: 1.1rem !important;
-  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  background-color: var(--current-secondary) !important;
-  color: var(--comic-black) !important;
-  
-  &:hover {
-    transform: scale(1.1) rotate(2deg);
-    box-shadow: 10px 10px 0px var(--comic-black) !important;
-    background-color: var(--current-accent) !important;
-  }
-  
-  &:active {
-    transform: scale(0.9) rotate(-2deg);
-    box-shadow: 2px 2px 0px var(--comic-black) !important;
-  }
-}
-
-// Theme Switcher Fix
-.theme-switcher {
-  background: white !important;
-  border: 3px solid black !important;
-  
-  .v-btn {
-    color: black !important;
-    &--active {
-      background-color: #eee !important;
-      .v-icon { color: var(--current-primary) !important; }
-    }
   }
 }
