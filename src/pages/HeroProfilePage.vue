@@ -1,50 +1,57 @@
 <template>
-  <v-card v-if="userStore.currentUser">
+  <v-card v-if="userStore.currentUser" class="comic-card">
     <v-card-title class="d-flex align-center">
-      Profil héros
+      <span class="comic-title">Profil héros</span>
 
       <v-spacer />
 
       <v-btn
         color="warning"
-        variant="outlined"
-        class="mr-2"
+        class="mr-2 comic-btn"
         @click="openEditDialog"
       >
         Modifier mon héros
       </v-btn>
 
-      <v-btn color="error" variant="outlined" @click="logout">
+      <v-btn color="error" class="comic-btn" @click="logout">
         Déconnexion
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-alert type="success" class="mb-4">
-        Connecté en tant que : {{ userStore.currentUser.login }}
+      <v-alert
+        type="success"
+        variant="tonal"
+        class="mb-4 border-lg border-opacity-100"
+        style="border-color: black !important"
+      >
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Connecté en tant que : {{ userStore.currentUser.login }}</span>
       </v-alert>
 
-      <v-card variant="outlined">
-        <v-card-title>
+      <v-card class="comic-card">
+        <v-card-title class="comic-title">
           {{ userStore.currentUser.hero.publicName }}
         </v-card-title>
 
-        <v-card-subtitle>
+        <v-card-subtitle class="mt-2 font-weight-bold">
           Nom réel : {{ userStore.currentUser.hero.realName || 'Inconnu' }}
         </v-card-subtitle>
 
         <v-card-text>
-          <h3 class="mb-2">Pouvoirs</h3>
+          <h3 class="comic-title text-black mb-2" style="text-shadow: none; -webkit-text-stroke: 0.5px black; font-size: 1.5rem">Pouvoirs</h3>
 
           <v-alert
             v-if="userStore.currentUser.hero.powers.length === 0"
             type="info"
+            variant="tonal"
             density="compact"
+            class="border-lg border-opacity-100"
+            style="border-color: black !important"
           >
-            Aucun pouvoir.
+            <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun pouvoir.</span>
           </v-alert>
 
-          <v-table v-else density="compact">
+          <v-table v-else density="compact" class="comic-table">
             <thead>
               <tr>
                 <th>Nom</th>
@@ -69,25 +76,30 @@
     </v-card-text>
   </v-card>
 
-  <v-card v-else>
-    <v-card-title>
+  <v-card v-else class="comic-card">
+    <v-card-title class="comic-title">
       Profil héros
     </v-card-title>
 
     <v-card-text>
-      <v-alert type="warning">
-        Aucun profil chargé.
+      <v-alert
+        type="warning"
+        variant="tonal"
+        class="border-lg border-opacity-100"
+        style="border-color: black !important"
+      >
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun profil chargé.</span>
       </v-alert>
 
-      <v-btn color="primary" class="mt-4" @click="reloadProfile">
+      <v-btn color="primary" class="mt-4 comic-btn" @click="reloadProfile">
         Recharger le profil
       </v-btn>
     </v-card-text>
   </v-card>
 
-  <v-dialog v-model="showEditDialog" max-width="800">
-    <v-card>
-      <v-card-title>
+  <v-dialog v-model="showEditDialog" max-width="800" transition="dialog-bottom-transition">
+    <v-card class="comic-card">
+      <v-card-title class="comic-title">
         Modifier mon héros
       </v-card-title>
 
@@ -96,20 +108,22 @@
           v-model="editedHero.publicName"
           label="Nom public"
           variant="outlined"
+          class="mt-2"
         />
 
         <v-text-field
           v-model="editedHero.realName"
           label="Nom réel"
           variant="outlined"
+          class="mt-2"
         />
 
-        <div class="d-flex align-center mb-2">
-          <h3>Pouvoirs</h3>
+        <div class="d-flex align-center mb-2 mt-4">
+          <h3 class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0.5px black; font-size: 1.5rem">Pouvoirs</h3>
 
           <v-spacer />
 
-          <v-btn color="primary" variant="outlined" @click="addPower">
+          <v-btn color="primary" class="comic-btn" @click="addPower">
             Ajouter un pouvoir
           </v-btn>
         </div>
@@ -117,64 +131,72 @@
         <v-alert
           v-if="editedHero.powers.length === 0"
           type="info"
-          class="mb-4"
+          variant="tonal"
+          class="mb-4 border-lg border-opacity-100"
+          style="border-color: black !important"
         >
-          Aucun pouvoir.
+          <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun pouvoir.</span>
         </v-alert>
 
-        <v-card
-          v-for="(power, index) in editedHero.powers"
-          :key="index"
-          variant="outlined"
-          class="mb-4"
-        >
-          <v-card-title class="d-flex align-center">
-            Pouvoir {{ index + 1 }}
+        <transition-group name="list-item" tag="div">
+          <v-card
+            v-for="(power, index) in editedHero.powers"
+            :key="index"
+            class="mb-4 comic-card"
+            style="box-shadow: 5px 5px 0 black !important"
+          >
+            <v-card-title class="d-flex align-center comic-title" style="font-size: 1.2rem">
+              Pouvoir {{ index + 1 }}
 
-            <v-spacer />
+              <v-spacer />
 
-            <v-btn color="error" size="small" @click="removePower(index)">
-              Supprimer
-            </v-btn>
-          </v-card-title>
+              <v-btn color="error" class="comic-btn" size="small" @click="removePower(index)">
+                Supprimer
+              </v-btn>
+            </v-card-title>
 
-          <v-card-text>
-            <v-text-field
-              v-model="power.name"
-              label="Nom du pouvoir"
-              variant="outlined"
-            />
+            <v-card-text>
+              <v-text-field
+                v-model="power.name"
+                label="Nom du pouvoir"
+                variant="outlined"
+                class="mt-2"
+              />
 
-            <v-select
-              v-model="power.type"
-              :items="powerTypes"
-              item-title="label"
-              item-value="value"
-              label="Type"
-              variant="outlined"
-            />
+              <v-select
+                v-model="power.type"
+                :items="powerTypes"
+                item-title="label"
+                item-value="value"
+                label="Type"
+                variant="outlined"
+                class="mt-2"
+              />
 
-            <v-text-field
-              v-model.number="power.level"
-              label="Niveau"
-              type="number"
-              min="0"
-              max="100"
-              variant="outlined"
-            />
-          </v-card-text>
-        </v-card>
+              <v-text-field
+                v-model.number="power.level"
+                label="Niveau"
+                type="number"
+                min="0"
+                max="100"
+                variant="outlined"
+                class="mt-2"
+              />
+            </v-card-text>
+          </v-card>
+        </transition-group>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions class="pa-4">
         <v-spacer />
 
-        <v-btn @click="cancelEdit">
+        <v-btn class="comic-btn" @click="cancelEdit">
           Annuler
         </v-btn>
 
         <v-btn
           color="primary"
+          class="comic-btn"
           :disabled="!canEditHero"
           @click="confirmEdit"
         >

@@ -1,22 +1,22 @@
 <template>
-  <v-card v-if="dataStore.currentTeam">
+  <v-card v-if="dataStore.currentTeam" class="comic-card">
     <v-card-title class="d-flex align-center">
-      Équipe : {{ dataStore.currentTeam.name }}
+      <span class="comic-title">Équipe : {{ dataStore.currentTeam.name }}</span>
 
       <v-spacer />
 
-      <v-btn color="primary" variant="outlined" class="mr-2" @click="showCreateHeroDialog = true">
+      <v-btn color="primary" class="mr-2 comic-btn" @click="showCreateHeroDialog = true">
         Créer un héros
       </v-btn>
 
-      <v-btn color="primary" variant="outlined" @click="loadMembers">
-        Recharger les membres
+      <v-btn color="primary" class="comic-btn" @click="loadMembers">
+        Recharger
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-card variant="outlined" class="mb-6">
-        <v-card-title>Ajouter un héros existant</v-card-title>
+      <v-card class="mb-6 comic-card" style="box-shadow: 6px 6px 0 black !important">
+        <v-card-title class="comic-title" style="font-size: 1.2rem">Ajouter un héros existant</v-card-title>
 
         <v-card-text>
           <v-select
@@ -26,12 +26,14 @@
             item-value="_id"
             label="Héros à ajouter"
             variant="outlined"
+            class="mt-2"
           />
         </v-card-text>
 
-        <v-card-actions>
+        <v-card-actions class="pa-4">
           <v-btn
             color="primary"
+            class="comic-btn"
             :disabled="!selectedHeroId"
             @click="addExistingHero"
           >
@@ -43,17 +45,21 @@
       <v-alert
         v-if="dataStore.currentTeam.members.length === 0"
         type="info"
-        class="mb-4"
+        variant="tonal"
+        class="mb-4 border-lg border-opacity-100"
+        style="border-color: black !important"
       >
-        Cette équipe n’a aucun membre.
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Cette équipe n’a aucun membre.</span>
       </v-alert>
 
       <v-alert
         v-else-if="dataStore.currentTeamHeroes.length === 0"
         type="warning"
-        class="mb-4"
+        variant="tonal"
+        class="mb-4 border-lg border-opacity-100"
+        style="border-color: black !important"
       >
-        Aucun héros chargé. Vérifie la phrase secrète ou recharge les membres.
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun héros chargé. Vérifie la phrase secrète ou recharge.</span>
       </v-alert>
 
       <v-row>
@@ -63,8 +69,8 @@
           cols="12"
           md="6"
         >
-          <v-card variant="outlined">
-            <v-card-title class="d-flex align-center">
+          <v-card class="comic-card">
+            <v-card-title class="d-flex align-center comic-title" style="font-size: 1.3rem">
               {{ hero.publicName }}
 
               <v-spacer />
@@ -72,7 +78,7 @@
               <v-btn
                 color="warning"
                 size="small"
-                class="mr-2"
+                class="mr-2 comic-btn"
                 @click="openEditHeroDialog(hero)"
               >
                 Modifier
@@ -81,28 +87,32 @@
               <v-btn
                 color="error"
                 size="small"
+                class="comic-btn"
                 @click="removeHero(hero._id)"
               >
                 Retirer
               </v-btn>
             </v-card-title>
 
-            <v-card-subtitle>
+            <v-card-subtitle class="mt-2 font-weight-bold">
               Nom réel : {{ hero.realName || 'Inconnu' }}
             </v-card-subtitle>
 
             <v-card-text>
-              <h3 class="mb-2">Pouvoirs</h3>
+              <h3 class="comic-title text-black mb-2" style="text-shadow: none; -webkit-text-stroke: 0.5px black; font-size: 1.2rem">Pouvoirs</h3>
 
               <v-alert
                 v-if="hero.powers.length === 0"
                 type="info"
+                variant="tonal"
                 density="compact"
+                class="border-lg border-opacity-100"
+                style="border-color: black !important"
               >
-                Aucun pouvoir.
+                <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun pouvoir.</span>
               </v-alert>
 
-              <v-table v-else density="compact">
+              <v-table v-else density="compact" class="comic-table">
                 <thead>
                   <tr>
                     <th>Nom</th>
@@ -129,13 +139,19 @@
     </v-card-text>
   </v-card>
 
-  <v-alert v-else type="warning">
-    Aucune équipe sélectionnée. Retourne dans une organisation puis clique sur “Ouvrir” sur une équipe.
+  <v-alert
+    v-else
+    type="warning"
+    variant="tonal"
+    class="border-lg border-opacity-100"
+    style="border-color: black !important"
+  >
+    <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucune équipe sélectionnée. Retourne dans une organisation.</span>
   </v-alert>
 
-  <v-dialog v-model="showCreateHeroDialog" max-width="800">
-    <v-card>
-      <v-card-title>
+  <v-dialog v-model="showCreateHeroDialog" max-width="800" transition="dialog-bottom-transition">
+    <v-card class="comic-card">
+      <v-card-title class="comic-title">
         Créer un nouveau héros
       </v-card-title>
 
@@ -144,20 +160,22 @@
           v-model="newHero.publicName"
           label="Nom public"
           variant="outlined"
+          class="mt-2"
         />
 
         <v-text-field
           v-model="newHero.realName"
           label="Nom réel"
           variant="outlined"
+          class="mt-2"
         />
 
-        <div class="d-flex align-center mb-2">
-          <h3>Pouvoirs</h3>
+        <div class="d-flex align-center mb-2 mt-4">
+          <h3 class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0.5px black; font-size: 1.5rem">Pouvoirs</h3>
 
           <v-spacer />
 
-          <v-btn color="primary" variant="outlined" @click="addPower">
+          <v-btn color="primary" class="comic-btn" @click="addPower">
             Ajouter un pouvoir
           </v-btn>
         </div>
@@ -165,64 +183,72 @@
         <v-alert
           v-if="newHero.powers.length === 0"
           type="info"
-          class="mb-4"
+          variant="tonal"
+          class="mb-4 border-lg border-opacity-100"
+          style="border-color: black !important"
         >
-          Aucun pouvoir ajouté.
+          <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun pouvoir ajouté.</span>
         </v-alert>
 
-        <v-card
-          v-for="(power, index) in newHero.powers"
-          :key="index"
-          variant="outlined"
-          class="mb-4"
-        >
-          <v-card-title class="d-flex align-center">
-            Pouvoir {{ index + 1 }}
+        <transition-group name="list-item" tag="div">
+          <v-card
+            v-for="(power, index) in newHero.powers"
+            :key="index"
+            class="mb-4 comic-card"
+            style="box-shadow: 5px 5px 0 black !important"
+          >
+            <v-card-title class="d-flex align-center comic-title" style="font-size: 1.2rem">
+              Pouvoir {{ index + 1 }}
 
-            <v-spacer />
+              <v-spacer />
 
-            <v-btn color="error" size="small" @click="removePower(index)">
-              Supprimer
-            </v-btn>
-          </v-card-title>
+              <v-btn color="error" size="small" class="comic-btn" @click="removePower(index)">
+                Supprimer
+              </v-btn>
+            </v-card-title>
 
-          <v-card-text>
-            <v-text-field
-              v-model="power.name"
-              label="Nom du pouvoir"
-              variant="outlined"
-            />
+            <v-card-text>
+              <v-text-field
+                v-model="power.name"
+                label="Nom du pouvoir"
+                variant="outlined"
+                class="mt-2"
+              />
 
-            <v-select
-              v-model="power.type"
-              :items="powerTypes"
-              item-title="label"
-              item-value="value"
-              label="Type"
-              variant="outlined"
-            />
+              <v-select
+                v-model="power.type"
+                :items="powerTypes"
+                item-title="label"
+                item-value="value"
+                label="Type"
+                variant="outlined"
+                class="mt-2"
+              />
 
-            <v-text-field
-              v-model.number="power.level"
-              label="Niveau"
-              type="number"
-              min="0"
-              max="100"
-              variant="outlined"
-            />
-          </v-card-text>
-        </v-card>
+              <v-text-field
+                v-model.number="power.level"
+                label="Niveau"
+                type="number"
+                min="0"
+                max="100"
+                variant="outlined"
+                class="mt-2"
+              />
+            </v-card-text>
+          </v-card>
+        </transition-group>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions class="pa-4">
         <v-spacer />
 
-        <v-btn @click="cancelCreateHero">
+        <v-btn class="comic-btn" @click="cancelCreateHero">
           Annuler
         </v-btn>
 
         <v-btn
           color="primary"
+          class="comic-btn"
           :disabled="!canCreateHero"
           @click="confirmCreateHero"
         >
@@ -232,9 +258,9 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog v-model="showEditHeroDialog" max-width="800">
-    <v-card>
-      <v-card-title>
+  <v-dialog v-model="showEditHeroDialog" max-width="800" transition="dialog-bottom-transition">
+    <v-card class="comic-card">
+      <v-card-title class="comic-title">
         Modifier un héros
       </v-card-title>
 
@@ -243,20 +269,22 @@
           v-model="editedHero.publicName"
           label="Nom public"
           variant="outlined"
+          class="mt-2"
         />
 
         <v-text-field
           v-model="editedHero.realName"
           label="Nom réel"
           variant="outlined"
+          class="mt-2"
         />
 
-        <div class="d-flex align-center mb-2">
-          <h3>Pouvoirs</h3>
+        <div class="d-flex align-center mb-2 mt-4">
+          <h3 class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0.5px black; font-size: 1.5rem">Pouvoirs</h3>
 
           <v-spacer />
 
-          <v-btn color="primary" variant="outlined" @click="addEditedPower">
+          <v-btn color="primary" class="comic-btn" @click="addEditedPower">
             Ajouter un pouvoir
           </v-btn>
         </div>
@@ -264,64 +292,72 @@
         <v-alert
           v-if="editedHero.powers.length === 0"
           type="info"
-          class="mb-4"
+          variant="tonal"
+          class="mb-4 border-lg border-opacity-100"
+          style="border-color: black !important"
         >
-          Aucun pouvoir.
+          <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucun pouvoir.</span>
         </v-alert>
 
-        <v-card
-          v-for="(power, index) in editedHero.powers"
-          :key="index"
-          variant="outlined"
-          class="mb-4"
-        >
-          <v-card-title class="d-flex align-center">
-            Pouvoir {{ index + 1 }}
+        <transition-group name="list-item" tag="div">
+          <v-card
+            v-for="(power, index) in editedHero.powers"
+            :key="index"
+            class="mb-4 comic-card"
+            style="box-shadow: 5px 5px 0 black !important"
+          >
+            <v-card-title class="d-flex align-center comic-title" style="font-size: 1.2rem">
+              Pouvoir {{ index + 1 }}
 
-            <v-spacer />
+              <v-spacer />
 
-            <v-btn color="error" size="small" @click="removeEditedPower(index)">
-              Supprimer
-            </v-btn>
-          </v-card-title>
+              <v-btn color="error" size="small" class="comic-btn" @click="removeEditedPower(index)">
+                Supprimer
+              </v-btn>
+            </v-card-title>
 
-          <v-card-text>
-            <v-text-field
-              v-model="power.name"
-              label="Nom du pouvoir"
-              variant="outlined"
-            />
+            <v-card-text>
+              <v-text-field
+                v-model="power.name"
+                label="Nom du pouvoir"
+                variant="outlined"
+                class="mt-2"
+              />
 
-            <v-select
-              v-model="power.type"
-              :items="powerTypes"
-              item-title="label"
-              item-value="value"
-              label="Type"
-              variant="outlined"
-            />
+              <v-select
+                v-model="power.type"
+                :items="powerTypes"
+                item-title="label"
+                item-value="value"
+                label="Type"
+                variant="outlined"
+                class="mt-2"
+              />
 
-            <v-text-field
-              v-model.number="power.level"
-              label="Niveau"
-              type="number"
-              min="0"
-              max="100"
-              variant="outlined"
-            />
-          </v-card-text>
-        </v-card>
+              <v-text-field
+                v-model.number="power.level"
+                label="Niveau"
+                type="number"
+                min="0"
+                max="100"
+                variant="outlined"
+                class="mt-2"
+              />
+            </v-card-text>
+          </v-card>
+        </transition-group>
       </v-card-text>
 
-      <v-card-actions>
+      <v-card-actions class="pa-4">
         <v-spacer />
 
-        <v-btn @click="cancelEditHero">
+        <v-btn class="comic-btn" @click="cancelEditHero">
           Annuler
         </v-btn>
 
         <v-btn
           color="primary"
+          class="comic-btn"
           :disabled="!canEditHero"
           @click="confirmEditHero"
         >

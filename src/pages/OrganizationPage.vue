@@ -1,69 +1,75 @@
 <template>
-  <v-card v-if="dataStore.currentOrg">
+  <v-card v-if="dataStore.currentOrg" class="comic-card">
     <v-card-title class="d-flex align-center">
-      Organisation : {{ dataStore.currentOrg.name }}
+      <span class="comic-title">Organisation : {{ dataStore.currentOrg.name }}</span>
 
       <v-spacer />
 
-      <v-btn color="primary" @click="showAddTeam = !showAddTeam">
-        Ajouter une équipe
+      <v-btn color="primary" class="comic-btn" @click="showAddTeam = !showAddTeam">
+        {{ showAddTeam ? 'Masquer' : 'Ajouter une équipe' }}
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-card
-        v-if="showAddTeam"
-        variant="outlined"
-        class="mb-6"
-      >
-        <v-card-title>Ajouter une équipe existante</v-card-title>
+      <transition name="bam">
+        <v-card
+          v-if="showAddTeam"
+          class="mb-6 comic-card"
+          style="box-shadow: 6px 6px 0 black !important"
+        >
+          <v-card-title class="comic-title" style="font-size: 1.2rem">Ajouter une équipe existante</v-card-title>
 
-        <v-card-text>
-          <v-select
-            v-model="selectedTeamId"
-            :items="availableTeams"
-            item-title="name"
-            item-value="_id"
-            label="Équipe à ajouter"
-            variant="outlined"
-          />
-        </v-card-text>
+          <v-card-text>
+            <v-select
+              v-model="selectedTeamId"
+              :items="availableTeams"
+              item-title="name"
+              item-value="_id"
+              label="Équipe à ajouter"
+              variant="outlined"
+              class="mt-2"
+            />
+          </v-card-text>
 
-        <v-card-actions>
-          <v-btn
-            color="primary"
-            :disabled="!selectedTeamId"
-            @click="confirmAddTeam"
-          >
-            Valider
-          </v-btn>
+          <v-card-actions class="pa-4">
+            <v-btn
+              color="primary"
+              class="comic-btn"
+              :disabled="!selectedTeamId"
+              @click="confirmAddTeam"
+            >
+              Valider
+            </v-btn>
 
-          <v-btn @click="cancelAddTeam">
-            Annuler
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+            <v-btn class="comic-btn" @click="cancelAddTeam">
+              Annuler
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </transition>
 
-      <h2 class="mb-4">Équipes de l’organisation</h2>
+      <h2 class="comic-title text-black mb-4" style="text-shadow: none; -webkit-text-stroke: 0.5px black; font-size: 1.5rem">Équipes de l’organisation</h2>
 
       <v-alert
         v-if="dataStore.currentOrg.teams.length === 0"
         type="info"
-        class="mb-4"
+        variant="tonal"
+        class="mb-4 border-lg border-opacity-100"
+        style="border-color: black !important"
       >
-        Cette organisation n’a aucune équipe.
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Cette organisation n’a aucune équipe.</span>
       </v-alert>
 
-      <v-table v-else>
+      <v-table v-else class="comic-table">
         <thead>
           <tr>
             <th>Nom</th>
-            <th>Nombre de membres</th>
+            <th>Membres</th>
             <th>Actions</th>
           </tr>
         </thead>
 
-        <tbody>
+        <transition-group name="list-item" tag="tbody">
           <tr
             v-for="team in dataStore.currentOrg.teams"
             :key="team._id"
@@ -74,7 +80,7 @@
               <v-btn
                 color="primary"
                 size="small"
-                class="mr-2"
+                class="mr-2 comic-btn"
                 @click="openTeam(team._id)"
               >
                 Ouvrir
@@ -83,19 +89,26 @@
               <v-btn
                 color="error"
                 size="small"
+                class="comic-btn"
                 @click="removeTeam(team._id)"
               >
                 Retirer
               </v-btn>
             </td>
           </tr>
-        </tbody>
+        </transition-group>
       </v-table>
     </v-card-text>
   </v-card>
 
-  <v-alert v-else type="warning">
-    Aucune organisation sélectionnée ou phrase secrète incorrecte.
+  <v-alert
+    v-else
+    type="warning"
+    variant="tonal"
+    class="border-lg border-opacity-100"
+    style="border-color: black !important"
+  >
+    <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucune organisation sélectionnée ou phrase secrète incorrecte.</span>
   </v-alert>
   <ConfirmDialog ref="confirmDialog" />
 </template>
