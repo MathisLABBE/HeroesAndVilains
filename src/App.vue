@@ -37,13 +37,15 @@
     </v-navigation-drawer>
 
     <v-main class="position-relative overflow-hidden">
-      <!-- Opposition Layout Elements -->
+      <!-- Opposition Layout Elements (Centered relative to v-main) -->
       <div class="opposition-divider-container">
-        <div class="lightning-bolt"></div>
+        <div class="lightning-bolt-wrapper">
+          <div class="lightning-bolt"></div>
+        </div>
         <div class="vs-badge">VS</div>
       </div>
       
-      <v-container fluid class="fill-height align-start position-relative" style="z-index: 1;">
+      <v-container fluid class="fill-height align-start position-relative" style="z-index: 10;">
         <router-view v-slot="{ Component }">
           <transition name="bam" mode="out-in">
             <div :key="route.path" class="w-100">
@@ -76,7 +78,7 @@ watch(() => themeStore.currentMode, (newMode) => {
   } else if (newMode === 'villain') {
     theme.global.name.value = 'villainTheme'
   } else {
-    theme.global.name.value = 'heroTheme' 
+    theme.global.name.value = 'oppositionTheme'
   }
 }, { immediate: true })
 </script>
