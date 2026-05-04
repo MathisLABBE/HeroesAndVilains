@@ -1,46 +1,51 @@
 <template>
-  <v-card>
-    <v-card-title>
-      Phrase secrète d’organisation
+  <v-card class="comic-card">
+    <v-card-title class="comic-title">
+      Phrase secrète
     </v-card-title>
 
     <v-card-text>
       <v-text-field
         v-model="secretInput"
-        label="Phrase secrète"
+        label="Saisissez la phrase secrète"
         variant="outlined"
+        class="mt-4"
       />
 
       <v-alert
         v-if="secretStore.hasSecret"
         type="success"
-        class="mt-4"
+        variant="tonal"
+        class="mt-4 border-lg border-opacity-100"
+        style="border-color: black !important"
       >
-        Phrase secrète enregistrée.
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Phrase secrète enregistrée.</span>
       </v-alert>
 
       <v-alert
         v-else
         type="warning"
-        class="mt-4"
+        variant="tonal"
+        class="mt-4 border-lg border-opacity-100"
+        style="border-color: black !important"
       >
-        Aucune phrase secrète enregistrée.
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucune phrase secrète enregistrée.</span>
       </v-alert>
     </v-card-text>
 
-    <v-card-actions>
-      <v-btn color="primary" @click="saveSecret">
+    <v-card-actions class="pa-4">
+      <v-btn color="primary" class="comic-btn" @click="saveSecret">
         Enregistrer
       </v-btn>
 
-      <v-btn color="error" @click="clearSecret">
+      <v-btn color="error" class="comic-btn" @click="clearSecret">
         Supprimer
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useSecretStore } from '@/stores/secret.store'
 

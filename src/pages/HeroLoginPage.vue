@@ -1,14 +1,15 @@
 <template>
-  <v-card max-width="500" class="mx-auto">
-    <v-card-title>
+  <v-card max-width="500" class="mx-auto comic-card">
+    <v-card-title class="comic-title">
       Connexion héros
     </v-card-title>
 
     <v-card-text>
       <v-text-field
         v-model="login"
-        label="Login"
+        label="Identifiant"
         variant="outlined"
+        class="mt-4"
       />
 
       <v-text-field
@@ -16,21 +17,27 @@
         label="Mot de passe"
         type="password"
         variant="outlined"
+        class="mt-2"
       />
 
       <v-alert
         type="info"
-        class="mt-4"
+        variant="tonal"
+        class="mt-4 border-lg border-opacity-100"
+        style="border-color: black !important"
       >
-        Comptes de test : superdupond / azer, chatounette / azer, maddog / azer, supertutu / azer
+        <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0; font-size: 1.2rem">
+          Comptes de test : superdupond, chatounette, maddog, supertutu (mdp: azer)
+        </span>
       </v-alert>
     </v-card-text>
 
-    <v-card-actions>
+    <v-card-actions class="pa-4">
       <v-spacer />
 
       <v-btn
         color="primary"
+        class="comic-btn"
         :disabled="login.trim() === '' || password.trim() === ''"
         @click="connect"
       >

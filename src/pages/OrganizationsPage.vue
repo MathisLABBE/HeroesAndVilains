@@ -1,21 +1,21 @@
 <template>
-  <v-card>
+  <v-card class="comic-card">
     <v-card-title class="d-flex align-center">
-      Organisations
+      <span class="comic-title">Organisations</span>
 
       <v-spacer />
 
-      <v-btn color="primary" @click="showCreateDialog = true">
+      <v-btn color="primary" class="comic-btn" @click="showCreateDialog = true">
         Créer une organisation
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-btn color="primary" variant="outlined" class="mb-4" @click="load">
+      <v-btn color="primary" variant="outlined" class="mb-4 comic-btn" @click="load">
         Recharger
       </v-btn>
 
-      <v-table>
+      <v-table class="comic-table">
         <thead>
           <tr>
             <th>Nom</th>
@@ -24,24 +24,24 @@
           </tr>
         </thead>
 
-        <tbody>
+        <transition-group name="list-item" tag="tbody">
           <tr v-for="org in dataStore.orgs" :key="org._id">
             <td>{{ org.name }}</td>
             <td>{{ org._id }}</td>
             <td>
-              <v-btn color="primary" @click="selectOrg(org._id)">
+              <v-btn color="primary" class="comic-btn" @click="selectOrg(org._id)">
                 Ouvrir
               </v-btn>
             </td>
           </tr>
-        </tbody>
+        </transition-group>
       </v-table>
     </v-card-text>
   </v-card>
 
-  <v-dialog v-model="showCreateDialog" max-width="500">
-    <v-card>
-      <v-card-title>
+  <v-dialog v-model="showCreateDialog" max-width="500" transition="dialog-bottom-transition">
+    <v-card class="comic-card">
+      <v-card-title class="comic-title">
         Créer une organisation
       </v-card-title>
 
@@ -50,24 +50,27 @@
           v-model="newOrgName"
           label="Nom de l’organisation"
           variant="outlined"
+          class="mt-2"
         />
 
         <v-text-field
           v-model="newOrgSecret"
           label="Phrase secrète"
           variant="outlined"
+          class="mt-2"
         />
       </v-card-text>
 
       <v-card-actions>
         <v-spacer />
 
-        <v-btn @click="cancelCreateOrg">
+        <v-btn class="comic-btn" @click="cancelCreateOrg">
           Annuler
         </v-btn>
 
         <v-btn
           color="primary"
+          class="comic-btn"
           :disabled="!canCreateOrg"
           @click="confirmCreateOrg"
         >

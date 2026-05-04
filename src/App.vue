@@ -1,6 +1,6 @@
 <template>
   <v-app :class="`mode-${themeStore.currentMode}`">
-    <v-app-bar color="primary" class="comic-app-bar" flat>
+    <v-app-bar color="primary" class="comic-app-bar" flat border>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
       <v-app-bar-title class="comic-title">
@@ -26,7 +26,7 @@
       </v-btn>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" class="comic-drawer">
+    <v-navigation-drawer v-model="drawer" class="comic-drawer" width="300">
       <v-list nav>
         <v-list-item title="Accueil" to="/" prepend-icon="mdi-home" />
         <v-list-item title="Phrase secrète" to="/secret" prepend-icon="mdi-key" />
@@ -36,11 +36,19 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
-      <v-container fluid class="fill-height align-start">
+    <v-main class="position-relative overflow-hidden">
+      <!-- Opposition Layout Elements -->
+      <div class="opposition-divider-container">
+        <div class="lightning-bolt"></div>
+        <div class="vs-badge">VS</div>
+      </div>
+      
+      <v-container fluid class="fill-height align-start position-relative" style="z-index: 1;">
         <router-view v-slot="{ Component }">
           <transition name="bam" mode="out-in">
-            <component :is="Component" />
+            <div :key="route.path" class="w-100">
+              <component :is="Component" />
+            </div>
           </transition>
         </router-view>
       </v-container>
@@ -54,10 +62,12 @@
 import { ref, watch } from 'vue'
 import { useThemeStore } from '@/stores/theme.store'
 import { useTheme } from 'vuetify'
+import { useRoute } from 'vue-router'
 import ErrorDialog from '@/components/ErrorDialog.vue'
 
 const themeStore = useThemeStore()
 const theme = useTheme()
+const route = useRoute()
 const drawer = ref(false)
 
 watch(() => themeStore.currentMode, (newMode) => {
@@ -66,7 +76,6 @@ watch(() => themeStore.currentMode, (newMode) => {
   } else if (newMode === 'villain') {
     theme.global.name.value = 'villainTheme'
   } else {
-    // For opposition, we might want a neutral base or keep the last one
     theme.global.name.value = 'heroTheme' 
   }
 }, { immediate: true })
@@ -74,16 +83,30 @@ watch(() => themeStore.currentMode, (newMode) => {
 
 <style lang="scss">
 .comic-app-bar {
-  border-bottom: 3px solid black !important;
+  border-bottom: 5px solid black !important;
+  z-index: 1000 !important;
 }
 
 .theme-switcher {
   background: white !important;
-  border: 2px solid black !important;
+  border: 3px solid black !important;
   border-radius: 4px !important;
   
   .v-btn--active {
     background: #eee !important;
+    border: 2px solid black !important;
   }
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.position-relative {
+  position: relative !important;
+}
+
+.overflow-hidden {
+  overflow: hidden !important;
 }
 </style>
