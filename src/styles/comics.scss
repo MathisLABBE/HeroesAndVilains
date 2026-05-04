@@ -13,6 +13,7 @@
   --villain-primary: #4a148c;
   --villain-secondary: #b2ff59;
   --villain-accent: #1a1a1a;
+  --villain-hover: #d4ff91; // Light nuance of neon green for villain mode
 
   // Opposition Palette (Hybrid)
   --opp-primary: #ff5722; 
@@ -129,13 +130,13 @@
   background: white !important;
   color: black !important;
   z-index: 5;
-  overflow: hidden; // Ensure title background doesn't bleed
+  overflow: hidden;
   
   .v-card-title {
     background-color: var(--current-primary) !important;
     border-bottom: 4px solid var(--comic-black);
     color: white !important;
-    margin-bottom: 16px !important; // Add margin below the colored band
+    margin-bottom: 16px !important;
     padding: 16px 24px !important;
   }
 
@@ -163,7 +164,7 @@
 
   .mode-villain & {
     &:hover {
-      background-color: var(--villain-secondary) !important;
+      background-color: var(--villain-hover) !important; // Light green nuance
       color: var(--comic-black) !important;
       transform: scale(1.1) rotate(-2deg);
     }
