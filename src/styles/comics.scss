@@ -129,11 +129,18 @@
   background: white !important;
   color: black !important;
   z-index: 5;
+  overflow: hidden; // Ensure title background doesn't bleed
   
   .v-card-title {
     background-color: var(--current-primary) !important;
     border-bottom: 4px solid var(--comic-black);
     color: white !important;
+    margin-bottom: 16px !important; // Add margin below the colored band
+    padding: 16px 24px !important;
+  }
+
+  .v-card-text {
+    padding-top: 8px !important;
   }
 }
 
@@ -151,20 +158,17 @@
     transform: scale(1.1) rotate(2deg);
     box-shadow: 10px 10px 0px var(--comic-black) !important;
     background-color: var(--current-accent) !important;
-    // Default hover text color
     color: var(--comic-black) !important;
   }
 
-  // Villain Mode Hover Override
   .mode-villain & {
     &:hover {
-      background-color: var(--villain-secondary) !important; // Stays green on hover for better visibility
+      background-color: var(--villain-secondary) !important;
       color: var(--comic-black) !important;
       transform: scale(1.1) rotate(-2deg);
     }
   }
 
-  // Opposition Mode Hover Override
   .mode-opposition & {
     background-color: var(--opp-accent) !important;
     color: var(--comic-black) !important;
