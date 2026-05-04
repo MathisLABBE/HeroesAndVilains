@@ -13,6 +13,7 @@
     "lint:fix": "eslint --fix"
   },
   "dependencies": {
+    "@fontsource/bangers": "^5.2.8",
     "@fontsource/roboto": "^5.2.10",
     "@mdi/font": "7.4.47",
     "axios": "^1.16.0",

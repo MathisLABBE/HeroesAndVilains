@@ -27,6 +27,14 @@ export default defineConfig({
           },
         ],
       },
+      google: {
+        families: [
+          {
+            name: 'Bangers',
+            styles: 'wght@400',
+          },
+        ],
+      },
     }),
   ],
   define: { 'process.env': {} },

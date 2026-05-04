@@ -1,0 +1,149 @@
+// src/styles/comics.scss
+
+:root {
+  --comic-black: #000000;
+  --comic-white: #ffffff;
+  
+  // Hero Palette
+  --hero-primary: #0056b3;
+  --hero-secondary: #ffc107;
+  --hero-accent: #e3f2fd;
+  
+  // Villain Palette
+  --villain-primary: #6a1b9a;
+  --villain-secondary: #76ff03;
+  --villain-accent: #f3e5f5;
+
+  --border-width: 3px;
+  --comic-shadow: 6px 6px 0px var(--comic-black);
+  --comic-font: 'Bangers', cursive;
+}
+
+// Global Comics Overrides
+.v-application {
+  font-family: 'Roboto', sans-serif;
+  
+  h1, h2, h3, h4, .comic-title {
+    font-family: var(--comic-font) !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 1px var(--comic-black);
+    color: var(--comic-white);
+    text-shadow: 3px 3px 0px var(--comic-black);
+  }
+}
+
+// Halftone Patterns
+%halftone-base {
+  background-image: radial-gradient(var(--comic-black) 15%, transparent 16%);
+  background-size: 10px 10px;
+}
+
+// Mode Specific Backgrounds
+.mode-hero {
+  --current-primary: var(--hero-primary);
+  --current-secondary: var(--hero-secondary);
+  --current-accent: var(--hero-accent);
+  background-color: var(--hero-primary);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 15%, transparent 16%);
+  background-size: 20px 20px;
+}
+
+.mode-villain {
+  --current-primary: var(--villain-primary);
+  --current-secondary: var(--villain-secondary);
+  --current-accent: var(--villain-accent);
+  background-color: var(--villain-primary);
+  background-image: radial-gradient(rgba(0, 0, 0, 0.2) 15%, transparent 16%);
+  background-size: 20px 20px;
+}
+
+.mode-opposition {
+  background: linear-gradient(90deg, var(--hero-primary) 50%, var(--villain-primary) 50%);
+  position: relative;
+  
+  &::before {
+    content: "VS";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-10deg);
+    font-family: var(--comic-font);
+    font-size: 10rem;
+    color: var(--hero-secondary);
+    -webkit-text-stroke: 4px var(--comic-black);
+    z-index: 100;
+    pointer-events: none;
+    opacity: 0.3;
+  }
+}
+
+// Comic Components
+.v-card.comic-card {
+  border: var(--border-width) solid var(--comic-black) !important;
+  box-shadow: var(--comic-shadow) !important;
+  border-radius: 0 !important;
+  transition: transform 0.2s, box-shadow 0.2s;
+  
+  &:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px var(--comic-black) !important;
+  }
+}
+
+.v-btn.comic-btn {
+  border: var(--border-width) solid var(--comic-black) !important;
+  border-radius: 0 !important;
+  font-family: var(--comic-font) !important;
+  text-transform: uppercase !important;
+  box-shadow: 4px 4px 0px var(--comic-black) !important;
+  transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 6px 6px 0px var(--comic-black) !important;
+  }
+  
+  &:active {
+    transform: scale(0.95);
+    box-shadow: 2px 2px 0px var(--comic-black) !important;
+  }
+}
+
+// Animations
+@keyframes bam {
+  0% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  70% { transform: scale(1.2) rotate(10deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes pow {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(2) rotate(45deg); opacity: 0; }
+}
+
+.bam-enter-active {
+  animation: bam 0.4s forwards;
+}
+
+.pow-leave-active {
+  animation: pow 0.3s forwards;
+}
+
+// CRUD List Transitions
+.list-item-move,
+.list-item-enter-active,
+.list-item-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-item-enter-from {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+.list-item-leave-to {
+  opacity: 0;
+  transform: scale(0.5);
+  background-color: var(--comic-black);
+}

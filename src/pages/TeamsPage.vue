@@ -1,21 +1,21 @@
 <template>
-  <v-card>
+  <v-card class="comic-card">
     <v-card-title class="d-flex align-center">
-      Équipes
+      <span class="comic-title">Équipes</span>
 
       <v-spacer />
 
-      <v-btn color="primary" @click="showCreateDialog = true">
+      <v-btn color="primary" class="comic-btn" @click="showCreateDialog = true">
         Créer une équipe
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-btn color="primary" variant="outlined" class="mb-4" @click="load">
+      <v-btn color="primary" variant="outlined" class="mb-4 comic-btn" @click="load">
         Recharger
       </v-btn>
 
-      <v-table>
+      <v-table class="comic-table">
         <thead>
           <tr>
             <th>Nom</th>
@@ -24,38 +24,40 @@
           </tr>
         </thead>
 
-        <tbody>
+        <transition-group name="list-item" tag="tbody">
           <tr v-for="team in dataStore.teams" :key="team._id">
             <td>{{ team.name }}</td>
             <td>{{ team._id }}</td>
             <td>{{ team.nbAffiliations }}</td>
           </tr>
-        </tbody>
+        </transition-group>
       </v-table>
     </v-card-text>
   </v-card>
 
-  <v-dialog v-model="showCreateDialog" max-width="500">
-    <v-card>
-      <v-card-title>Créer une équipe</v-card-title>
+  <v-dialog v-model="showCreateDialog" max-width="500" transition="dialog-bottom-transition">
+    <v-card class="comic-card">
+      <v-card-title class="comic-title">Créer une équipe</v-card-title>
 
       <v-card-text>
         <v-text-field
           v-model="newTeamName"
           label="Nom de l’équipe"
           variant="outlined"
+          class="mt-2"
         />
       </v-card-text>
 
       <v-card-actions>
         <v-spacer />
 
-        <v-btn @click="cancelCreate">
+        <v-btn class="comic-btn" @click="cancelCreate">
           Annuler
         </v-btn>
 
         <v-btn
           color="primary"
+          class="comic-btn"
           :disabled="newTeamName.trim() === ''"
           @click="confirmCreate"
         >

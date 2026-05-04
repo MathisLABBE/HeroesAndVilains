@@ -9,6 +9,7 @@ import { useErrorStore } from '@/stores/error.store'
 import { useUserStore } from '@/stores/user.store'
 
 import Index from '@/pages/index.vue'
+import HomePage from '@/pages/HomePage.vue'
 import SecretPage from '@/pages/SecretPage.vue'
 import OrganizationsPage from '@/pages/OrganizationsPage.vue'
 import OrganizationPage from '@/pages/OrganizationPage.vue'
@@ -24,7 +25,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Index,
+      component: HomePage,
     },
     {
       path: '/secret',
