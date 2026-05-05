@@ -3,9 +3,10 @@
     v-model="errorStore.isError"
     persistent
     max-width="500"
+    attach=".v-main"
   >
     <v-card class="comic-card">
-      <v-card-title class="comic-title text-error">
+      <v-card-title class="comic-title">
         Erreur
       </v-card-title>
 
