@@ -70,7 +70,7 @@
           md="6"
         >
           <v-card class="comic-card">
-            <v-card-title class="d-flex align-center comic-title" style="font-size: 1.3rem">
+            <v-card-title class="d-flex align-center">
               {{ hero.publicName }}
 
               <v-spacer />
