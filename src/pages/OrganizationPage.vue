@@ -79,7 +79,6 @@
             <td>
               <v-btn
                 color="primary"
-                size="small"
                 class="mr-2 comic-btn"
                 @click="openTeam(team._id)"
               >
@@ -88,7 +87,6 @@
 
               <v-btn
                 color="error"
-                size="small"
                 class="comic-btn"
                 @click="removeTeam(team._id)"
               >

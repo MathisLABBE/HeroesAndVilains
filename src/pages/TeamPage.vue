@@ -77,7 +77,6 @@
 
               <v-btn
                 color="warning"
-                size="small"
                 class="mr-2 comic-btn"
                 @click="openEditHeroDialog(hero)"
               >
@@ -86,7 +85,6 @@
 
               <v-btn
                 color="error"
-                size="small"
                 class="comic-btn"
                 @click="removeHero(hero._id)"
               >
