@@ -149,7 +149,7 @@
     <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucune équipe sélectionnée. Retourne dans une organisation.</span>
   </v-alert>
 
-  <v-dialog v-model="showCreateHeroDialog" max-width="800" transition="dialog-bottom-transition">
+  <v-dialog v-model="showCreateHeroDialog" max-width="800" transition="dialog-bottom-transition" scrollable>
     <v-card class="comic-card">
       <v-card-title class="comic-title">
         Créer un nouveau héros
@@ -258,7 +258,7 @@
     </v-card>
   </v-dialog>
 
-  <v-dialog v-model="showEditHeroDialog" max-width="800" transition="dialog-bottom-transition">
+  <v-dialog v-model="showEditHeroDialog" max-width="800" transition="dialog-bottom-transition" scrollable>
     <v-card class="comic-card">
       <v-card-title class="comic-title">
         Modifier un héros

@@ -97,7 +97,7 @@
     </v-card-text>
   </v-card>
 
-  <v-dialog v-model="showEditDialog" max-width="800" transition="dialog-bottom-transition">
+  <v-dialog v-model="showEditDialog" max-width="800" transition="dialog-bottom-transition" scrollable>
     <v-card class="comic-card">
       <v-card-title class="comic-title">
         Modifier mon héros

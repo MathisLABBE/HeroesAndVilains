@@ -39,6 +39,24 @@
   }
 }
 
+// Custom Comic Scrollbar
+::-webkit-scrollbar {
+  width: 14px;
+}
+::-webkit-scrollbar-track {
+  background: var(--comic-white);
+  border-left: 4px solid var(--comic-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--current-primary, var(--hero-primary));
+  border: 3px solid var(--comic-black);
+  box-shadow: 2px 2px 0 var(--comic-black);
+  
+  &:hover {
+    background: var(--current-secondary, var(--hero-secondary));
+  }
+}
+
 // Mode Specific Variables
 .mode-hero {
   --current-primary: var(--hero-primary);
@@ -163,6 +181,20 @@
     padding: 16px !important;
     background-color: #f8f8f8 !important;
     border-top: 2px solid #eee;
+  }
+}
+
+// Dialog Scroll Fix
+.v-dialog--scrollable {
+  .comic-card {
+    display: flex !important;
+    flex-direction: column !important;
+    max-height: 90vh !important;
+
+    .v-card-text {
+      flex-grow: 1 !important;
+      overflow-y: auto !important;
+    }
   }
 }
 
