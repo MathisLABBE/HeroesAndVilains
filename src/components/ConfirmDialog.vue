@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="show" persistent max-width="500">
-    <v-card>
-      <v-card-title>
+    <v-card class="comic-card">
+      <v-card-title class="comic-title">
         {{ title }}
       </v-card-title>
 
@@ -12,11 +12,11 @@
       <v-card-actions>
         <v-spacer />
 
-        <v-btn @click="cancel">
+        <v-btn class="comic-btn" @click="cancel">
           Annuler
         </v-btn>
 
-        <v-btn color="primary" @click="accept">
+        <v-btn class="comic-btn" color="primary" @click="accept">
           Confirmer
         </v-btn>
       </v-card-actions>

@@ -120,6 +120,10 @@
       background-color: var(--current-secondary) !important;
       color: var(--comic-black) !important;
       transform: translateX(10px) rotate(1deg);
+
+      .mode-opposition & {
+        color: var(--comic-white) !important;
+      }
     }
   }
 }

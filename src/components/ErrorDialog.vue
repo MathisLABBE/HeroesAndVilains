@@ -4,8 +4,8 @@
     persistent
     max-width="500"
   >
-    <v-card>
-      <v-card-title class="text-error">
+    <v-card class="comic-card">
+      <v-card-title class="comic-title text-error">
         Erreur
       </v-card-title>
 
@@ -16,7 +16,7 @@
       <v-card-actions>
         <v-spacer />
 
-        <v-btn color="primary" @click="errorStore.popError()">
+        <v-btn class="comic-btn" color="primary" @click="errorStore.popError()">
           OK
         </v-btn>
       </v-card-actions>
