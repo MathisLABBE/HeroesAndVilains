@@ -136,16 +136,33 @@
   z-index: 5;
   overflow: hidden;
   
-  .v-card-title {
+  .v-card-title,
+  .v-card-item,
+  .v-card-header {
     background-color: var(--current-primary) !important;
-    border-bottom: 4px solid var(--comic-black);
+    border-bottom: 4px solid var(--comic-black) !important;
     color: white !important;
-    margin-bottom: 16px !important;
-    padding: 16px 24px !important;
+    margin-bottom: 0 !important;
+    padding: 20px 24px !important;
+    font-family: var(--comic-font) !important;
+    font-size: 2rem !important;
+    display: block !important;
+    opacity: 1 !important;
   }
 
   .v-card-text {
-    padding-top: 8px !important;
+    padding: 24px !important;
+    background-color: white !important;
+    color: black !important;
+    font-size: 1.2rem !important;
+    min-height: 80px;
+    display: block !important;
+  }
+
+  .v-card-actions {
+    padding: 16px !important;
+    background-color: #f8f8f8 !important;
+    border-top: 2px solid #eee;
   }
 }
 
