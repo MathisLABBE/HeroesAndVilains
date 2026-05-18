@@ -1,22 +1,21 @@
 /**
- * router/index.ts
+ * router/index.js
  */
 
 import { createRouter, createWebHistory } from 'vue-router'
 
-import { useSecretStore } from '@/stores/secret.store'
-import { useErrorStore } from '@/stores/error.store'
-import { useUserStore } from '@/stores/user.store'
-
-import Index from '@/pages/index.vue'
-import HomePage from '@/pages/HomePage.vue'
-import SecretPage from '@/pages/SecretPage.vue'
-import OrganizationsPage from '@/pages/OrganizationsPage.vue'
-import OrganizationPage from '@/pages/OrganizationPage.vue'
-import TeamsPage from '@/pages/TeamsPage.vue'
-import TeamPage from '@/pages/TeamPage.vue'
 import HeroLoginPage from '@/pages/HeroLoginPage.vue'
 import HeroProfilePage from '@/pages/HeroProfilePage.vue'
+import HomePage from '@/pages/HomePage.vue'
+import Index from '@/pages/index.vue'
+import OrganizationPage from '@/pages/OrganizationPage.vue'
+import OrganizationsPage from '@/pages/OrganizationsPage.vue'
+import SecretPage from '@/pages/SecretPage.vue'
+import TeamPage from '@/pages/TeamPage.vue'
+import TeamsPage from '@/pages/TeamsPage.vue'
+import { useErrorStore } from '@/stores/error.store'
+import { useSecretStore } from '@/stores/secret.store'
+import { useUserStore } from '@/stores/user.store'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -82,7 +81,7 @@ const router = createRouter({
   ],
 })
 
-router.beforeEach((to) => {
+router.beforeEach(to => {
   const secretStore = useSecretStore()
   const userStore = useUserStore()
   const errorStore = useErrorStore()

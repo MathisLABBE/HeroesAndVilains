@@ -1,6 +1,6 @@
 <template>
   <v-app :class="`mode-${themeStore.currentMode}`">
-    <v-app-bar color="primary" class="comic-app-bar" flat border>
+    <v-app-bar border class="comic-app-bar" color="primary" flat>
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
       <v-app-bar-title class="comic-title">
@@ -12,40 +12,40 @@
       <!-- Theme Switcher -->
       <v-btn-toggle
         v-model="themeStore.currentMode"
-        mandatory
         class="theme-switcher mr-4"
         density="compact"
+        mandatory
       >
-        <v-btn value="hero" icon="mdi-shield-check" color="blue" title="Mode Héros" />
-        <v-btn value="opposition" icon="mdi-sword-cross" color="orange" title="Mode Opposition" />
-        <v-btn value="villain" icon="mdi-skull" color="purple" title="Mode Vilains" />
+        <v-btn color="blue" icon="mdi-shield-check" title="Mode Héros" value="hero" />
+        <v-btn color="orange" icon="mdi-sword-cross" title="Mode Opposition" value="opposition" />
+        <v-btn color="purple" icon="mdi-skull" title="Mode Vilains" value="villain" />
       </v-btn-toggle>
 
-      <v-btn to="/hero-login" class="comic-btn" color="secondary">
+      <v-btn class="comic-btn" color="secondary" to="/hero-login">
         Connexion
       </v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" class="comic-drawer" width="300">
       <v-list nav>
-        <v-list-item title="Accueil" to="/" prepend-icon="mdi-home" />
-        <v-list-item title="Phrase secrète" to="/secret" prepend-icon="mdi-key" />
-        <v-list-item title="Organisations" to="/organizations" prepend-icon="mdi-domain" />
-        <v-list-item title="Équipes" to="/teams" prepend-icon="mdi-account-group" />
-        <v-list-item title="Profil héros" to="/hero-profile" prepend-icon="mdi-account" />
+        <v-list-item prepend-icon="mdi-home" title="Accueil" to="/" />
+        <v-list-item prepend-icon="mdi-key" title="Phrase secrète" to="/secret" />
+        <v-list-item prepend-icon="mdi-domain" title="Organisations" to="/organizations" />
+        <v-list-item prepend-icon="mdi-account-group" title="Équipes" to="/teams" />
+        <v-list-item prepend-icon="mdi-account" title="Profil héros" to="/hero-profile" />
       </v-list>
     </v-navigation-drawer>
 
     <v-main class="position-relative overflow-hidden">
       <!-- Opposition Layout Elements -->
       <div class="opposition-divider-container">
-        <div class="lightning-bolt"></div>
+        <div class="lightning-bolt" />
         <div class="vs-badge">VS</div>
       </div>
-      
-      <v-container fluid class="fill-height align-start position-relative" style="z-index: 10;">
+
+      <v-container class="fill-height align-start position-relative" fluid style="z-index: 10;">
         <router-view v-slot="{ Component }">
-          <transition name="bam" mode="out-in">
+          <transition mode="out-in" name="bam">
             <div :key="route.path" class="w-100">
               <component :is="Component" />
             </div>
@@ -58,27 +58,27 @@
   </v-app>
 </template>
 
-<script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useThemeStore } from '@/stores/theme.store'
-import { useTheme } from 'vuetify'
-import { useRoute } from 'vue-router'
-import ErrorDialog from '@/components/ErrorDialog.vue'
+<script setup>
+  import { ref, watch } from 'vue'
+  import { useRoute } from 'vue-router'
+  import { useTheme } from 'vuetify'
+  import ErrorDialog from '@/components/ErrorDialog.vue'
+  import { useThemeStore } from '@/stores/theme.store'
 
-const themeStore = useThemeStore()
-const theme = useTheme()
-const route = useRoute()
-const drawer = ref(false)
+  const themeStore = useThemeStore()
+  const theme = useTheme()
+  const route = useRoute()
+  const drawer = ref(false)
 
-watch(() => themeStore.currentMode, (newMode) => {
-  if (newMode === 'hero') {
-    theme.global.name.value = 'heroTheme'
-  } else if (newMode === 'villain') {
-    theme.global.name.value = 'villainTheme'
-  } else {
-    theme.global.name.value = 'oppositionTheme'
-  }
-}, { immediate: true })
+  watch(() => themeStore.currentMode, newMode => {
+    if (newMode === 'hero') {
+      theme.global.name.value = 'heroTheme'
+    } else if (newMode === 'villain') {
+      theme.global.name.value = 'villainTheme'
+    } else {
+      theme.global.name.value = 'oppositionTheme'
+    }
+  }, { immediate: true })
 </script>
 
 <style lang="scss">
@@ -91,7 +91,7 @@ watch(() => themeStore.currentMode, (newMode) => {
   background: white !important;
   border: 3px solid black !important;
   border-radius: 4px !important;
-  
+
   .v-btn--active {
     background: #eee !important;
     border: 2px solid black !important;

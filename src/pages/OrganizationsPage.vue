@@ -5,13 +5,13 @@
 
       <v-spacer />
 
-      <v-btn color="primary" class="comic-btn" @click="showCreateDialog = true">
+      <v-btn class="comic-btn" color="primary" @click="showCreateDialog = true">
         Créer une organisation
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-btn color="primary" variant="outlined" class="mb-4 comic-btn" @click="load">
+      <v-btn class="mb-4 comic-btn" color="primary" variant="outlined" @click="load">
         Recharger
       </v-btn>
 
@@ -28,8 +28,9 @@
           <tr v-for="org in dataStore.orgs" :key="org._id">
             <td>{{ org.name }}</td>
             <td>{{ org._id }}</td>
+
             <td>
-              <v-btn color="primary" class="comic-btn" @click="selectOrg(org._id)">
+              <v-btn class="comic-btn" color="primary" @click="selectOrg(org._id)">
                 Ouvrir
               </v-btn>
             </td>
@@ -48,16 +49,16 @@
       <v-card-text>
         <v-text-field
           v-model="newOrgName"
+          class="mt-2"
           label="Nom de l’organisation"
           variant="outlined"
-          class="mt-2"
         />
 
         <v-text-field
           v-model="newOrgSecret"
+          class="mt-2"
           label="Phrase secrète"
           variant="outlined"
-          class="mt-2"
         />
       </v-card-text>
 
@@ -69,8 +70,8 @@
         </v-btn>
 
         <v-btn
-          color="primary"
           class="comic-btn"
+          color="primary"
           :disabled="!canCreateOrg"
           @click="confirmCreateOrg"
         >
@@ -81,50 +82,50 @@
   </v-dialog>
 </template>
 
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useDataStore } from '@/stores/data.store'
-import { useSecretStore } from '@/stores/secret.store'
+<script setup>
+  import { computed, onMounted, ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import { useDataStore } from '@/stores/data.store'
+  import { useSecretStore } from '@/stores/secret.store'
 
-const router = useRouter()
-const dataStore = useDataStore()
-const secretStore = useSecretStore()
+  const router = useRouter()
+  const dataStore = useDataStore()
+  const secretStore = useSecretStore()
 
-const showCreateDialog = ref(false)
-const newOrgName = ref('')
-const newOrgSecret = ref('')
+  const showCreateDialog = ref(false)
+  const newOrgName = ref('')
+  const newOrgSecret = ref('')
 
-onMounted(() => {
-  load()
-})
+  onMounted(() => {
+    load()
+  })
 
-const canCreateOrg = computed(() => {
-  return newOrgName.value.trim() !== '' && newOrgSecret.value.trim() !== ''
-})
+  const canCreateOrg = computed(() => {
+    return newOrgName.value.trim() !== '' && newOrgSecret.value.trim() !== ''
+  })
 
-async function load() {
-  await dataStore.loadOrgs()
-}
+  async function load () {
+    await dataStore.loadOrgs()
+  }
 
-async function selectOrg(id: string) {
-  await dataStore.loadOrgById(id)
-  router.push('/organization')
-}
+  async function selectOrg (id) {
+    await dataStore.loadOrgById(id)
+    router.push('/organization')
+  }
 
-function cancelCreateOrg() {
-  newOrgName.value = ''
-  newOrgSecret.value = ''
-  showCreateDialog.value = false
-}
+  function cancelCreateOrg () {
+    newOrgName.value = ''
+    newOrgSecret.value = ''
+    showCreateDialog.value = false
+  }
 
-async function confirmCreateOrg() {
-  await dataStore.createOrg(newOrgName.value, newOrgSecret.value)
+  async function confirmCreateOrg () {
+    await dataStore.createOrg(newOrgName.value, newOrgSecret.value)
 
-  secretStore.setSecret(newOrgSecret.value)
+    secretStore.setSecret(newOrgSecret.value)
 
-  newOrgName.value = ''
-  newOrgSecret.value = ''
-  showCreateDialog.value = false
-}
+    newOrgName.value = ''
+    newOrgSecret.value = ''
+    showCreateDialog.value = false
+  }
 </script>

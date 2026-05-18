@@ -15,7 +15,7 @@ The following example assumes a component located at `src/components/MyComponent
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   //
 </script>
 ```
@@ -29,7 +29,7 @@ When your template is rendered, the component's import will automatically be inl
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
   import MyComponent from '@/components/MyComponent.vue'
 </script>
 ```

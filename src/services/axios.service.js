@@ -6,7 +6,7 @@ const axiosAgent = axios.create({
   withCredentials: true,
 })
 
-axiosAgent.interceptors.request.use((config) => {
+axiosAgent.interceptors.request.use(config => {
   const secretStore = useSecretStore()
 
   config.headers = config.headers || {}
@@ -24,7 +24,7 @@ axiosAgent.interceptors.request.use((config) => {
   return config
 })
 
-function handleAxiosError(error: unknown) {
+function handleAxiosError (error) {
   if (axios.isAxiosError(error)) {
     if (error.response?.data) {
       return error.response.data
@@ -44,7 +44,7 @@ function handleAxiosError(error: unknown) {
   }
 }
 
-async function getRequest(url: string) {
+async function getRequest (url) {
   try {
     const response = await axiosAgent.get(url)
     return response.data
@@ -53,7 +53,7 @@ async function getRequest(url: string) {
   }
 }
 
-async function postRequest(url: string, data: unknown) {
+async function postRequest (url, data) {
   try {
     const response = await axiosAgent.post(url, data)
     return response.data
@@ -62,7 +62,7 @@ async function postRequest(url: string, data: unknown) {
   }
 }
 
-async function putRequest(url: string, data: unknown) {
+async function putRequest (url, data) {
   try {
     const response = await axiosAgent.put(url, data)
     return response.data
@@ -71,7 +71,7 @@ async function putRequest(url: string, data: unknown) {
   }
 }
 
-async function patchRequest(url: string, data: unknown) {
+async function patchRequest (url, data) {
   try {
     const response = await axiosAgent.patch(url, data)
     return response.data
@@ -82,7 +82,7 @@ async function patchRequest(url: string, data: unknown) {
 
 export {
   getRequest,
+  patchRequest,
   postRequest,
   putRequest,
-  patchRequest,
 }

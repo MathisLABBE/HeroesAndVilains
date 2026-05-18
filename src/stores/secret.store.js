@@ -8,11 +8,11 @@ export const useSecretStore = defineStore('secret', () => {
     return secret.value.trim() !== ''
   })
 
-  function setSecret(value: string) {
+  function setSecret (value) {
     secret.value = value
   }
 
-  function clearSecret() {
+  function clearSecret () {
     secret.value = ''
   }
 

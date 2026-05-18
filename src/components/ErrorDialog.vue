@@ -1,9 +1,9 @@
 <template>
   <v-dialog
     v-model="errorStore.isError"
-    persistent
-    max-width="500"
     attach=".v-main"
+    max-width="500"
+    persistent
   >
     <v-card class="comic-card">
       <v-card-title class="comic-title">
@@ -25,8 +25,8 @@
   </v-dialog>
 </template>
 
-<script setup lang="ts">
-import { useErrorStore } from '@/stores/error.store'
+<script setup>
+  import { useErrorStore } from '@/stores/error.store'
 
-const errorStore = useErrorStore()
+  const errorStore = useErrorStore()
 </script>

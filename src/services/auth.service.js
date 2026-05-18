@@ -1,17 +1,17 @@
 import { getRequest, postRequest } from '@/services/axios.service'
 
-async function signIn(login: string, password: string) {
+async function signIn (login, password) {
   return postRequest('/authapi/auth/signin', {
     login,
     password,
   })
 }
 
-async function getUser(login: string) {
+async function getUser (login) {
   return getRequest(`/authapi/user/getuser/${login}`)
 }
 
 export {
-  signIn,
   getUser,
+  signIn,
 }

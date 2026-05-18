@@ -5,7 +5,7 @@
 
       <v-spacer />
 
-      <v-btn color="primary" class="comic-btn" @click="showAddTeam = !showAddTeam">
+      <v-btn class="comic-btn" color="primary" @click="showAddTeam = !showAddTeam">
         {{ showAddTeam ? 'Masquer' : 'Ajouter une équipe' }}
       </v-btn>
     </v-card-title>
@@ -22,19 +22,19 @@
           <v-card-text>
             <v-select
               v-model="selectedTeamId"
-              :items="availableTeams"
+              class="mt-2"
               item-title="name"
               item-value="_id"
+              :items="availableTeams"
               label="Équipe à ajouter"
               variant="outlined"
-              class="mt-2"
             />
           </v-card-text>
 
           <v-card-actions class="pa-4">
             <v-btn
-              color="primary"
               class="comic-btn"
+              color="primary"
               :disabled="!selectedTeamId"
               @click="confirmAddTeam"
             >
@@ -52,10 +52,10 @@
 
       <v-alert
         v-if="dataStore.currentOrg.teams.length === 0"
-        type="info"
-        variant="tonal"
         class="mb-4 border-lg border-opacity-100"
         style="border-color: black !important"
+        type="info"
+        variant="tonal"
       >
         <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Cette organisation n’a aucune équipe.</span>
       </v-alert>
@@ -76,18 +76,19 @@
           >
             <td>{{ team.name }}</td>
             <td>{{ team.members.length }}</td>
+
             <td>
               <v-btn
-                color="primary"
                 class="mr-2 comic-btn"
+                color="primary"
                 @click="openTeam(team._id)"
               >
                 Ouvrir
               </v-btn>
 
               <v-btn
-                color="error"
                 class="comic-btn"
+                color="error"
                 @click="removeTeam(team._id)"
               >
                 Retirer
@@ -101,76 +102,77 @@
 
   <v-alert
     v-else
-    type="warning"
-    variant="tonal"
     class="border-lg border-opacity-100"
     style="border-color: black !important"
+    type="warning"
+    variant="tonal"
   >
     <span class="comic-title text-black" style="text-shadow: none; -webkit-text-stroke: 0">Aucune organisation sélectionnée ou phrase secrète incorrecte.</span>
   </v-alert>
+
   <ConfirmDialog ref="confirmDialog" />
 </template>
 
-<script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useDataStore } from '@/stores/data.store'
-import ConfirmDialog from '@/components/ConfirmDialog.vue'
+<script setup>
+  import { computed, onMounted, ref } from 'vue'
+  import { useRouter } from 'vue-router'
+  import ConfirmDialog from '@/components/ConfirmDialog.vue'
+  import { useDataStore } from '@/stores/data.store'
 
-const router = useRouter()
-const dataStore = useDataStore()
+  const router = useRouter()
+  const dataStore = useDataStore()
 
-const showAddTeam = ref(false)
-const selectedTeamId = ref<string | null>(null)
+  const showAddTeam = ref(false)
+  const selectedTeamId = ref(null)
 
-onMounted(async () => {
-  await dataStore.loadTeams()
-})
-
-const availableTeams = computed(() => {
-  if (!dataStore.currentOrg) {
-    return dataStore.teams
-  }
-
-  const teamIdsInOrg = dataStore.currentOrg.teams.map((team) => team._id)
-
-  return dataStore.teams.filter((team) => {
-    return !teamIdsInOrg.includes(team._id)
+  onMounted(async () => {
+    await dataStore.loadTeams()
   })
-})
 
-const confirmDialog = ref<InstanceType<typeof ConfirmDialog> | null>(null)
+  const availableTeams = computed(() => {
+    if (!dataStore.currentOrg) {
+      return dataStore.teams
+    }
 
-async function confirmAddTeam() {
-  if (!selectedTeamId.value) {
-    return
+    const teamIdsInOrg = new Set(dataStore.currentOrg.teams.map(team => team._id))
+
+    return dataStore.teams.filter(team => {
+      return !teamIdsInOrg.has(team._id)
+    })
+  })
+
+  const confirmDialog = ref(null)
+
+  async function confirmAddTeam () {
+    if (!selectedTeamId.value) {
+      return
+    }
+
+    await dataStore.addTeamInCurrentOrg(selectedTeamId.value)
+
+    selectedTeamId.value = null
   }
 
-  await dataStore.addTeamInCurrentOrg(selectedTeamId.value)
-
-  selectedTeamId.value = null
-}
-
-function cancelAddTeam() {
-  selectedTeamId.value = null
-  showAddTeam.value = false
-}
-
-async function removeTeam(idTeam: string) {
-  const confirmed = await confirmDialog.value?.open(
-    'Retirer une équipe',
-    'Voulez-vous vraiment retirer cette équipe de l’organisation ?'
-  )
-
-  if (!confirmed) {
-    return
+  function cancelAddTeam () {
+    selectedTeamId.value = null
+    showAddTeam.value = false
   }
 
-  await dataStore.removeTeamFromCurrentOrg(idTeam)
-}
+  async function removeTeam (idTeam) {
+    const confirmed = await confirmDialog.value?.open(
+      'Retirer une équipe',
+      'Voulez-vous vraiment retirer cette équipe de l’organisation ?',
+    )
 
-function openTeam(idTeam: string) {
-  dataStore.setCurrentTeamFromOrg(idTeam)
-  router.push('/team')
-}
+    if (!confirmed) {
+      return
+    }
+
+    await dataStore.removeTeamFromCurrentOrg(idTeam)
+  }
+
+  function openTeam (idTeam) {
+    dataStore.setCurrentTeamFromOrg(idTeam)
+    router.push('/team')
+  }
 </script>

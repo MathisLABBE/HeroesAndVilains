@@ -5,13 +5,13 @@
 
       <v-spacer />
 
-      <v-btn color="primary" class="comic-btn" @click="showCreateDialog = true">
+      <v-btn class="comic-btn" color="primary" @click="showCreateDialog = true">
         Créer une équipe
       </v-btn>
     </v-card-title>
 
     <v-card-text>
-      <v-btn color="primary" variant="outlined" class="mb-4 comic-btn" @click="load">
+      <v-btn class="mb-4 comic-btn" color="primary" variant="outlined" @click="load">
         Recharger
       </v-btn>
 
@@ -42,9 +42,9 @@
       <v-card-text>
         <v-text-field
           v-model="newTeamName"
+          class="mt-2"
           label="Nom de l’équipe"
           variant="outlined"
-          class="mt-2"
         />
       </v-card-text>
 
@@ -56,8 +56,8 @@
         </v-btn>
 
         <v-btn
-          color="primary"
           class="comic-btn"
+          color="primary"
           :disabled="newTeamName.trim() === ''"
           @click="confirmCreate"
         >
@@ -68,32 +68,32 @@
   </v-dialog>
 </template>
 
-<script setup lang="ts">
-import { onMounted, ref } from 'vue'
-import { useDataStore } from '@/stores/data.store'
+<script setup>
+  import { onMounted, ref } from 'vue'
+  import { useDataStore } from '@/stores/data.store'
 
-const dataStore = useDataStore()
+  const dataStore = useDataStore()
 
-const showCreateDialog = ref(false)
-const newTeamName = ref('')
+  const showCreateDialog = ref(false)
+  const newTeamName = ref('')
 
-onMounted(() => {
-  load()
-})
+  onMounted(() => {
+    load()
+  })
 
-async function load() {
-  await dataStore.loadTeams()
-}
+  async function load () {
+    await dataStore.loadTeams()
+  }
 
-function cancelCreate() {
-  newTeamName.value = ''
-  showCreateDialog.value = false
-}
+  function cancelCreate () {
+    newTeamName.value = ''
+    showCreateDialog.value = false
+  }
 
-async function confirmCreate() {
-  await dataStore.createTeam(newTeamName.value)
+  async function confirmCreate () {
+    await dataStore.createTeam(newTeamName.value)
 
-  newTeamName.value = ''
-  showCreateDialog.value = false
-}
+    newTeamName.value = ''
+    showCreateDialog.value = false
+  }
 </script>

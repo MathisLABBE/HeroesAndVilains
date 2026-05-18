@@ -5,12 +5,12 @@ export const useErrorStore = defineStore('error', () => {
   const isError = ref(false)
   const errorMsg = ref('')
 
-  function pushError(message: string) {
+  function pushError (message) {
     errorMsg.value = message
     isError.value = true
   }
 
-  function popError() {
+  function popError () {
     isError.value = false
     errorMsg.value = ''
   }

@@ -13,19 +13,19 @@ Scaffolded with Vuetify CLI.
 
 - Framework: Vue 3 + Vite
 - UI Library: Vuetify
-- Language: TypeScript
+- Language: JavaScript
 - Package manager: npm
 
 ## 🧭 Start Here
 
-- Main entry: `src/main.ts`
+- Main entry: `src/main.js`
 - Main app component: `src/App.vue`
 - Main styles: `src/styles/`
 - Plugin setup: `src/plugins/`
 
 ## 📁 Project Structure
 
-- `src/main.ts` — application entry point
+- `src/main.js` — application entry point
 - `src/App.vue` — root component
 - `src/components/` — reusable Vue components
 - `src/plugins/` — plugin registration and setup
@@ -64,8 +64,6 @@ npm run build
 - `npm run dev`
 - `npm run build`
 - `npm run preview`
-- `npm run build-only`
-- `npm run type-check`
 - `npm run lint`
 - `npm run lint:fix`
 
