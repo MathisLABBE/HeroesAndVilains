@@ -1,16 +1,8 @@
-/**
- * plugins/vuetify.js
- *
- * Framework documentation: https://vuetifyjs.com`
- */
-
-// Composables
 import { createVuetify } from 'vuetify'
-// Styles
+
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
 export default createVuetify({
   theme: {
     defaultTheme: 'heroTheme',
@@ -46,7 +38,7 @@ export default createVuetify({
       oppositionTheme: {
         dark: false,
         colors: {
-          primary: '#ff5722', // Hybrid Orange
+          primary: '#ff5722',
           secondary: '#000000',
           accent: '#ffd54f',
           background: '#f5f5f5',

@@ -1,3 +1,50 @@
 <template>
-  <h1>SecretView</h1>
+  <v-card class="comic-card">
+    <v-card-title class="comic-title">
+      Phrase secrète
+    </v-card-title>
+
+    <v-card-text>
+      <v-text-field
+        v-model="secretInput"
+        class="mt-4"
+        label="Saisissez la phrase secrète"
+      />
+
+      <v-alert v-if="secretStore.hasSecret" class="mt-4" type="success">
+        Phrase secrète enregistrée.
+      </v-alert>
+
+      <v-alert v-else class="mt-4" type="warning">
+        Aucune phrase secrète enregistrée.
+      </v-alert>
+    </v-card-text>
+
+    <v-card-actions class="pa-4">
+      <v-btn class="comic-btn" color="primary" @click="saveSecret">
+        Enregistrer
+      </v-btn>
+
+      <v-btn class="comic-btn" color="error" @click="clearSecret">
+        Supprimer
+      </v-btn>
+    </v-card-actions>
+  </v-card>
 </template>
+
+<script setup>
+  import { ref } from 'vue'
+  import { useSecretStore } from '@/stores/secret'
+
+  const secretStore = useSecretStore()
+  const secretInput = ref(secretStore.secret)
+
+  function saveSecret () {
+    secretStore.setSecret(secretInput.value)
+  }
+
+  function clearSecret () {
+    secretInput.value = ''
+    secretStore.clearSecret()
+  }
+</script>

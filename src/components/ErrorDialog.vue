@@ -1,7 +1,6 @@
 <template>
   <v-dialog
     v-model="errorStore.isError"
-    attach=".v-main"
     max-width="500"
     persistent
   >
@@ -26,7 +25,7 @@
 </template>
 
 <script setup>
-  import { useErrorStore } from '@/stores/error.store'
+  import { useErrorStore } from '@/stores/errors'
 
   const errorStore = useErrorStore()
 </script>

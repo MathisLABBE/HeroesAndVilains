@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="show" attach=".v-main" max-width="500" persistent>
+  <v-dialog v-model="show" max-width="500" persistent>
     <v-card class="comic-card">
       <v-card-title class="comic-title">
         {{ title }}

@@ -1,32 +1,35 @@
 import axios from 'axios'
-import { useSecretStore } from '@/stores/secret.store'
+import { useSecretStore } from '@/stores/secret'
 
 const axiosAgent = axios.create({
   baseURL: 'https://apidemo.iut-bm.univ-fcomte.fr',
   withCredentials: true,
 })
 
-axiosAgent.interceptors.request.use(config => {
+let xsrfToken = ''
+
+function setXsrfToken (token) {
+  xsrfToken = token
+}
+
+function getHeaders () {
   const secretStore = useSecretStore()
+  const headers = {}
 
-  config.headers = config.headers || {}
-
-  if (secretStore.secret) {
-    config.headers['org-secret'] = secretStore.secret
+  if (secretStore.secret !== '') {
+    headers['org-secret'] = secretStore.secret
   }
 
-  const xsrfToken = localStorage.getItem('xsrfToken')
-
-  if (xsrfToken) {
-    config.headers['x-xsrf-token'] = xsrfToken
+  if (xsrfToken !== '') {
+    headers['x-xsrf-token'] = xsrfToken
   }
 
-  return config
-})
+  return headers
+}
 
 function handleAxiosError (error) {
   if (axios.isAxiosError(error)) {
-    if (error.response?.data) {
+    if (error.response && error.response.data) {
       return error.response.data
     }
 
@@ -46,7 +49,9 @@ function handleAxiosError (error) {
 
 async function getRequest (url) {
   try {
-    const response = await axiosAgent.get(url)
+    const response = await axiosAgent.get(url, {
+      headers: getHeaders(),
+    })
     return response.data
   } catch (error) {
     return handleAxiosError(error)
@@ -55,7 +60,9 @@ async function getRequest (url) {
 
 async function postRequest (url, data) {
   try {
-    const response = await axiosAgent.post(url, data)
+    const response = await axiosAgent.post(url, data, {
+      headers: getHeaders(),
+    })
     return response.data
   } catch (error) {
     return handleAxiosError(error)
@@ -64,7 +71,9 @@ async function postRequest (url, data) {
 
 async function putRequest (url, data) {
   try {
-    const response = await axiosAgent.put(url, data)
+    const response = await axiosAgent.put(url, data, {
+      headers: getHeaders(),
+    })
     return response.data
   } catch (error) {
     return handleAxiosError(error)
@@ -73,7 +82,9 @@ async function putRequest (url, data) {
 
 async function patchRequest (url, data) {
   try {
-    const response = await axiosAgent.patch(url, data)
+    const response = await axiosAgent.patch(url, data, {
+      headers: getHeaders(),
+    })
     return response.data
   } catch (error) {
     return handleAxiosError(error)
@@ -85,4 +96,5 @@ export {
   patchRequest,
   postRequest,
   putRequest,
+  setXsrfToken,
 }

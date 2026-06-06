@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 import {
   getUser,
@@ -8,33 +8,44 @@ import {
 import {
   authUpdateHero,
 } from '@/services/hero.service'
-import { useErrorStore } from '@/stores/error.store'
+import { setXsrfToken } from '@/services/axios.service'
+import { useErrorStore } from '@/stores/errors'
 
-export const useUserStore = defineStore('user', () => {
-  const login = ref(localStorage.getItem('login') || '')
-  const xsrfToken = ref(localStorage.getItem('xsrfToken') || '')
-  const refreshToken = ref(localStorage.getItem('refreshToken') || '')
-
+export const useAuthStore = defineStore('auth', () => {
+  const login = ref('')
+  const xsrfToken = ref('')
+  const refreshToken = ref('')
   const currentUser = ref(null)
+  const isLogged = ref(false)
 
   const errorStore = useErrorStore()
 
-  const isLogged = computed(() => {
-    return login.value.trim() !== '' && xsrfToken.value.trim() !== ''
-  })
+  function isSuccess (response) {
+    return response.err === 0 || response.error === 0
+  }
+
+  function saveSession (userData) {
+    login.value = userData.name
+    xsrfToken.value = userData.xsrfToken
+    refreshToken.value = userData.refreshtoken
+    isLogged.value = true
+    setXsrfToken(xsrfToken.value)
+  }
+
+  function clearSession () {
+    login.value = ''
+    xsrfToken.value = ''
+    refreshToken.value = ''
+    currentUser.value = null
+    isLogged.value = false
+    setXsrfToken('')
+  }
 
   async function loginUser (loginValue, passwordValue) {
     const response = await signIn(loginValue, passwordValue)
 
-    if (response.err === 0 || response.error === 0) {
-      login.value = response.data.name
-      xsrfToken.value = response.data.xsrfToken
-      refreshToken.value = response.data.refreshtoken
-
-      localStorage.setItem('login', login.value)
-      localStorage.setItem('xsrfToken', xsrfToken.value)
-      localStorage.setItem('refreshToken', refreshToken.value)
-
+    if (isSuccess(response)) {
+      saveSession(response.data)
       await loadCurrentUser()
 
       return true
@@ -52,7 +63,7 @@ export const useUserStore = defineStore('user', () => {
 
     const response = await getUser(login.value)
 
-    if (response.err === 0 || response.error === 0) {
+    if (isSuccess(response)) {
       currentUser.value = response.data
     } else {
       currentUser.value = null
@@ -66,14 +77,7 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function logout () {
-    login.value = ''
-    xsrfToken.value = ''
-    refreshToken.value = ''
-    currentUser.value = null
-
-    localStorage.removeItem('login')
-    localStorage.removeItem('xsrfToken')
-    localStorage.removeItem('refreshToken')
+    clearSession()
   }
 
   async function updateCurrentHero (hero) {
@@ -84,7 +88,7 @@ export const useUserStore = defineStore('user', () => {
 
     const response = await authUpdateHero(hero)
 
-    if (response.err === 0 || response.error === 0) {
+    if (isSuccess(response)) {
       await loadCurrentUser()
       return true
     }
